@@ -14,8 +14,8 @@ class EmployeeSeeder extends Seeder
      */
     public function run(): void
     {
-       
-
+      
+      
       // Find the users created in the DatabaseSeeder (avoiding duplication)
       $employee1 = User::where('email', 'tom@example.com')->first();
       $employee2 = User::where('email', 'sam@example.com')->first();

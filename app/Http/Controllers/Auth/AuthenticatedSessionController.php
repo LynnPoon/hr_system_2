@@ -22,37 +22,24 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    // public function store(LoginRequest $request): RedirectResponse
-    // {
-    //     $request->authenticate();
-
-    //     $request->session()->regenerate();
-
-    //     return redirect()->intended(route('dashboard', absolute: false));
-    // }
-
-
+    
     public function store(Request $request)
     {
-        $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-
-        if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
-            $request->session()->regenerate();
-
-            // Check the role of the logged-in user
-            if (Auth::user()->role === 'admin') {
-                return redirect()->route('dashboard');  // Redirect to admin dashboard
-            } else {
-                return redirect()->route('dashboard');  // Redirect to employee dashboard or index
-            }
-        }
-
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
+      $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required'],
+      ]);
+      
+      if (Auth::attempt($request->only('email', 'password'), $request->filled('remember'))) {
+        $request->session()->regenerate();
+        
+        // Redirect to the unified dashboard
+        return redirect()->route('dashboard');
+      }
+      
+      return back()->withErrors([
+        'email' => 'The provided credentials do not match our records.',
+      ]);
     }
 
 

@@ -19,4 +19,15 @@ class Employee extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    protected $fillable = [
+      'first_name',
+      'last_name',
+      'position',
+      'department_id',
+      'date_of_employment',
+      'salary',
+      'phone_num',
+      'user_id', // Include this if you plan to link employees to users
+  ];
 }
