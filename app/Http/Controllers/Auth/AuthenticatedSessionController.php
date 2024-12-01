@@ -8,6 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Crypt;
+
 
 class AuthenticatedSessionController extends Controller
 {
@@ -35,12 +37,12 @@ class AuthenticatedSessionController extends Controller
         
         // Redirect to the unified dashboard
         return redirect()->route('dashboard');
-      }
-      
+      } 
+            
       return back()->withErrors([
         'email' => 'The provided credentials do not match our records.',
       ]);
-    }
+    }    
 
 
 
