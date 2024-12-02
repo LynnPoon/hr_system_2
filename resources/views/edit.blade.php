@@ -11,7 +11,7 @@
            <div class="p-6 text-gray-900">
  
                <body class="container py-4">
-                 <h1 class="mb-4">Employee Records</h1>
+                 <h1 class="text-center font-bold">Employee Record</h1>
  
                  <form action="{{ route('employee.update', $employee->id)}}" method="post" class="row g-3 mb-4">
                    @csrf

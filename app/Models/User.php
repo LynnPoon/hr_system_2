@@ -9,23 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Crypt;
 
 class User extends Authenticatable
-{
-    /* public function setEmailAttribute($value)
-    {
-        $this->attributes['email'] = Crypt::encryptString($value);
-    }
-
-    public function getEmailAttribute($value)
-    {
-        return Crypt::decryptString($value);
-    }
-
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = bcrypt($value); // For password encryption
-    } */
-          
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+{          
     use HasFactory, Notifiable;
 
     /**

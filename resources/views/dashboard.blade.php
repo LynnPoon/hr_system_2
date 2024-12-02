@@ -38,7 +38,9 @@
                         <th class="border border-gray-300 px-4 py-2 text-left font-semibold">Date of Employment</th>
                         <th class="border border-gray-300 px-4 py-2 text-left font-semibold">Salary</th>
                         <th class="border border-gray-300 px-4 py-2 text-left font-semibold">Phone Number</th>
+                        @if(Auth::user()->role === 'admin')
                         <th class="border border-gray-300 px-4 py-2"></th>
+                        @endif
                       </tr>
                     </thead>
                     <tbody class="bg-white">
