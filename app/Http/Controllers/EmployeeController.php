@@ -96,26 +96,19 @@ class EmployeeController extends Controller
      */
     public function show(Request $request)
     {
-      // Check if an 'id' is provided in the request
       if ($request->has('id') && !empty($request->input('id'))) {
-        // Validate the 'id' input
         $validated = $request->validate([
-          'id' => 'required|integer|exists:employees,id',
+            'id' => 'required|integer|exists:employees,id',
         ]);
-                
-        $employee = Employee::find($validated['id']);
-      
-        if (!$employee) {
-          // Set a session message if no employee is found
-          return redirect()->route('dashboard')->with('message', 'No records found.');
-        }
+
+        $employee = Employee::find($validated['id']); // Will not be null due to validation
 
         return view('dashboard', compact('employee'));
+    }
 
-      } else {        
-        $employees = Employee::all();
-        return view('dashboard', compact('employees'));
-      }
+      // Display all employees if no specific ID is provided
+      $employees = Employee::all();
+      return view('dashboard', compact('employees'));
     }
 
 
