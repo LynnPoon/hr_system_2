@@ -104,19 +104,12 @@ class EmployeeController extends Controller
         ]);
                 
         $employee = Employee::find($validated['id']);
-      
-        if (!$employee) {
-          // Set a session message if no employee is found
-          return redirect()->route('dashboard')->with('message', 'No records found.');
-        }
-
         return view('dashboard', compact('employee'));
-
-      } else {        
-        $employees = Employee::all();
-        return view('dashboard', compact('employees'));
       }
-    }
+      else {
+      $employees = Employee::all();
+      return view('dashboard', compact('employees'));
+    }}
 
 
     /**

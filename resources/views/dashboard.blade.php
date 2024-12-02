@@ -45,8 +45,8 @@
                     </thead>
                     <tbody class="bg-white">
                       @if(Auth::user()->role === 'admin' && isset($employees))
-                        @foreach($employees as $employee)
-                        <tr onclick="window.location='{{ route('employee.edit', $employee->id) }}'" class="hover:bg-gray-100 cursor-pointer">
+                      @foreach($employees as $employee)
+                      <tr onclick="window.location='{{ route('employee.edit', $employee->id) }}'" class="hover:bg-gray-100 cursor-pointer">
                           <td class="border px-4 py-2">{{ $employee->id }}</td>
                           <td class="border px-4 py-2">{{ $employee->first_name }}</td>
                           <td class="border px-4 py-2">{{ $employee->last_name }}</td>
@@ -66,6 +66,28 @@
                           </td>
                         </tr>
                         @endforeach
+
+                        @elseif(Auth::user()->role === 'admin' && isset($employee)) <!-- Handle a single employee -->
+                        <tr onclick="window.location='{{ route('employee.edit', $employee->id) }}'" class="hover:bg-gray-100 cursor-pointer">
+                        <td class="border px-4 py-2">{{ $employee->id }}</td>
+                        <td class="border px-4 py-2">{{ $employee->first_name }}</td>
+                        <td class="border px-4 py-2">{{ $employee->last_name }}</td>
+                        <td class="border px-4 py-2">{{ $employee->position }}</td>
+                        <td class="border px-4 py-2">{{ $employee->department->name }}</td>
+                        <td class="border px-4 py-2">{{ $employee->date_of_employment }}</td>
+                        <td class="border px-4 py-2">{{ $employee->salary }}</td>
+                        <td class="border px-4 py-2">{{ $employee->phone_num }}</td>
+                        <td class="border px-4 py-2">
+                          <form action="{{ route('employee.destroy', $employee->id) }}" method="post" id="delete-form-{{ $employee->id }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" onclick="confirmDelete(event, {{ $employee->id }})" class="text-red-600 hover:underline">
+                              Delete
+                            </button>
+                          </form>
+                        </td>
+                      </tr>
+
                       @elseif(Auth::user()->role === 'employee' && isset($employee))
                       <tr>
                         <td class="border px-4 py-2">{{ $employee->id }}</td>
@@ -81,20 +103,7 @@
                     </tbody>
                   </table>
                 </div>                
-              </div>
-                  
-              @if (session('success'))
-              <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4" role="alert">
-                {{ session('success') }}
-              </div>
-              @endif
-            
-              @if (session('message'))
-              <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
-                {{ session('message') }}
-              </div>
-              @endif
-            
+              </div>                  
             </div>
           </div>
         </div>
