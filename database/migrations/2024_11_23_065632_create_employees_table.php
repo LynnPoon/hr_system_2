@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('date_of_employment');
             $table->decimal('salary', 8, 2);
             $table->string('phone_num', 15);
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Add this line
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

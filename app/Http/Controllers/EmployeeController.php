@@ -21,10 +21,10 @@ class EmployeeController extends Controller
     public function index()
     {
       if (Auth::user()->role === 'admin') {
-        $employees = Employee::with('department')->get(); // Admin sees all employees
+        $employees = Employee::with('department')->get(); // Admin sees all employees (prepared statement)
         return view('dashboard', compact('employees'));
       } else {        
-        $employee = Auth::user()->employee;
+        $employee = Auth::user()->employee; // prepared statement
         return view('dashboard', compact('employee'));
       }
     }
@@ -35,7 +35,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-      $departments = Department::all(); // Fetch all departments
+      $departments = Department::all();
       return view('add', compact('departments')); // Pass departments to the view
     }
 
@@ -62,15 +62,15 @@ class EmployeeController extends Controller
       $validated['position'] = htmlspecialchars(trim($validated['position']), ENT_QUOTES, 'UTF-8');
       $validated['phone_num'] = htmlspecialchars(trim($validated['phone_num']), ENT_QUOTES, 'UTF-8');
       
-      // Create the User account first
+      // Create the User account first (prepared statement)
       $user = User::create([
         'name' => $validated['fname'] . ' ' . $validated['lname'],
         'email' => strtolower($validated['fname']) . $validated['lname'] . '@example.com',
         'password' => bcrypt('password'), // Default password
-        'role' => 'employee', // Assign 'employee' role
+        'role' => 'employee', // Assign 'employee' role by default
         ]);
         
-      // Now create the Employee, including the user_id in the creation
+      // Now create the Employee, including the user_id in the creation (prepared statement)
       $employee = Employee::create([
         'first_name' => $validated['fname'],
         'last_name' => $validated['lname'],
@@ -103,7 +103,7 @@ class EmployeeController extends Controller
           'id' => 'required|integer|exists:employees,id',
         ]);
                 
-        $employee = Employee::find($validated['id']);
+        $employee = Employee::find($validated['id']); // this prepared statement will be converted by Laravel to: SELECT * FROM employees WHERE id = :id;
         return view('dashboard', compact('employee'));
       }
       else {
@@ -117,13 +117,10 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-      // Retrieve the employee by the ID
       $employee = Employee::findOrFail($id); // Use findOrFail to ensure the employee exists
       
-      // Fetch all departments for the select field
-      $departments = Department::all();
+      $departments = Department::all();      
       
-      // Return the edit view with the employee data and departments
       return view('edit', compact('employee', 'departments'));
     }
 
@@ -149,10 +146,8 @@ class EmployeeController extends Controller
       $validated['position'] = htmlspecialchars(trim($validated['position']), ENT_QUOTES, 'UTF-8');
       $validated['phone_num'] = htmlspecialchars(trim($validated['phone_num']), ENT_QUOTES, 'UTF-8');
       
-      // Find the employee
       $employee = Employee::findOrFail($id);
       
-      // Update the employee details
       $employee->update([
         'first_name' => $validated['fname'],
         'last_name' => $validated['lname'],
@@ -186,8 +181,7 @@ class EmployeeController extends Controller
       if ($employee->user) {
         $employee->user->delete();  // This deletes the related User account
       }
-      
-      // Delete the employee record
+            
       $employee->delete();
       
       return redirect()->route('dashboard')->with('success', 'Employee deleted successfully.');
